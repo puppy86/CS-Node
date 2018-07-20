@@ -11,9 +11,9 @@
 #define FLAG_LOG_PACKETS 16
 #define FLAG_LOG_NODES_BUFFER 32
 
-///////////////////
+
 #define LOG_LEVEL (FLAG_LOG_NOTICE | FLAG_LOG_WARN | FLAG_LOG_ERROR | FLAG_LOG_EVENTS | (FLAG_LOG_PACKETS & 0) | (FLAG_LOG_NODES_BUFFER & 0))
-///////////////////
+
 
 #if LOG_LEVEL & FLAG_LOG_NOTICE
 #define LOG_NOTICE(TEXT) std::cerr << "[NOTICE] " << TEXT << std::endl
@@ -33,11 +33,7 @@
 #define LOG_ERROR(TEXT)
 #endif
 
-////#if LOG_LEVEL & FLAG_LOG_NOTICE
-////#define SUPER_TIC() do { std::cerr << __FILE__ << ":" << __LINE__ << std::endl; } while(0)
-////#else
-////#define SUPER_TIC()
-////#endif
+
 #define SUPER_TIC()
 
 

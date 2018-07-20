@@ -204,7 +204,7 @@ typedef std::list<Task>::iterator TaskId;
 
 class TaskManager {
 public:
-	TaskManager():  // Ctrl + Alt + Delete
+	TaskManager(): 
 		nextTime_(Clock::now()) { }
 
 	void stop() { running_ = false; }
@@ -213,7 +213,7 @@ public:
 		TaskId result;
 
 		{
-			//std::lock_guard<std::mutex> l(mut_);
+			
 
 			if (tasks_.empty() || t.nextLaunch < nextTime_)
 				nextTime_ = t.nextLaunch;
@@ -227,22 +227,22 @@ public:
 	}
 
 	void remove(const TaskId id) {
-		//std::lock_guard<std::mutex> l(mut_);
+		
 		tasks_.erase(id);
 	}
 
 	void clear() {
-		//std::lock_guard<std::mutex> l(mut_);
+		
 		tasks_.clear();
 	}
 
 	template <typename Func>
 	void run(Func f) {
 		if (nextTime_ > Clock::now()) return;
-		//while (running_) {
+		
 			bool wroteNewNT = false;
 			{
-				//std::unique_lock<std::mutex> l(mut_);
+				
 				for (auto& t : tasks_) {
 					if (t.nextLaunch <= Clock::now()) {
 						f(t);
@@ -258,9 +258,7 @@ public:
 						nextTime_ = t.nextLaunch;
 				}
 
-				//cv_.wait_until(l, nextTime_, [this]() { return !tasks_.empty() && nextTime_ <= Clock::now(); });
 			}
-		//}
 	}
 
 private:

@@ -43,7 +43,6 @@ bool SessionIO::Initialization() {
 	boost::property_tree::ptree config;
 	boost::property_tree::read_ini("Configure.ini", config);
 
-	// Setting the network
 	const boost::property_tree::ptree & host_Input = config.get_child("hostInput");
 	udp::resolver::query query_send(udp::v4(), host_Input.get<std::string>("ip"), host_Input.get<std::string>("port", "9001"));
 	InputServiceRecvEndpoint_ = *InputServiceResolver_.resolve(query_send);
@@ -66,9 +65,7 @@ bool SessionIO::Initialization() {
 
 	signalServerAddr = OutputServiceServerEndpoint_.address();
 
-	//m_senderThread = std::thread(&SessionIO::senderThreadRoutine, this);
 
-	// Initialize resources
 	m_combinedData = (char*)malloc(MAX_PART * max_length);
 	if (!m_combinedData) return false;
 
@@ -155,10 +152,9 @@ inline void SessionIO::InputServiceHandleReceive(PacketPtr message, const boost:
 	char* dataPtr = message->data;
 	std::size_t size = bytes_transferred - Packet::headerLength();
 
-	/* Combine parts */
 	if (message->countHeader > 0) {
 		if (message->countHeader > MAX_PART || message->header >= message->countHeader)
-			return; // Stay safe, memory
+			return; 
 
 		if (message->command == CommandList::Redirect)
 			RunRedirect(message, size);
@@ -168,7 +164,6 @@ inline void SessionIO::InputServiceHandleReceive(PacketPtr message, const boost:
 
 		if (packResult.first->left != 0) return;
 
-		// Ok, we can combine, since left = 0
 		PacketPtr* last = packResult.first->packets + message->countHeader - 1;
 		char* writePtr = m_combinedData;
 		size_t total = packResult.first->totalSize;
@@ -253,7 +248,6 @@ inline void SessionIO::InputServiceHandleReceive(PacketPtr message, const boost:
 	}
 }
 
-/* Returns true if further processing needed */
 inline bool SessionIO::RunRedirect(PacketPtr message, std::size_t dataSize) {
 	auto counter = getBackDataCounter(message);
 
@@ -375,18 +369,17 @@ inline void SessionIO::RegistrationToServer() {
 }
 
 inline void SessionIO::SendSinhroPacket() {
-	//outFrmPack(CommandList::SinhroPacket, SubCommandList::Empty, Version::version_1, MyPublicKey_.c_str(), MyPublicKey_.length(), true, &OutputServiceServerEndpoint_);
+	
 }
 
 inline void SessionIO::SendGreetings() {
-	//outFrmPack(CommandList::SinhroPacket, SubCommandList::Empty, Version::version_1, MyPublicKey_.c_str(), MyPublicKey_.length(), true, &OutputServiceServerEndpoint_);
+	
 }
 
-bool SessionIO::GenerationHash() {  // Generation P?
+bool SessionIO::GenerationHash() { 
 	char buf[sizeof(ip::address_v4::uint_type) + PURE_PUBLIC_KEY_LENGTH + 1];
 	*((ip::address_v4::uint_type*)buf) = MyIp_.to_v4().to_uint();
 
-	// Load and hash my public key
 	std::ifstream fin(PUBLIC_KEY_FILENAME);
 	if (!fin.is_open()) {
 		std::cerr << "Cannot open '" << PUBLIC_KEY_FILENAME << "'!" << std::endl;
@@ -403,7 +396,6 @@ bool SessionIO::GenerationHash() {  // Generation P?
 
 	m_hasher.init(MyPublicKey_);
 
-	// Generate my node hash
 	const auto hsZerosLength = hash_length - BLAKE2_HASH_LENGTH;
 	blake2s(MyHash_.str + hsZerosLength, BLAKE2_HASH_LENGTH, buf, sizeof(buf) - 1, nullptr, 0);
 
@@ -412,7 +404,6 @@ bool SessionIO::GenerationHash() {  // Generation P?
 
 void SessionIO::Run() {
 	InitConnection();
-	//io_service_client_.run();
 
 	while (true) {
 		io_service_client_.poll();

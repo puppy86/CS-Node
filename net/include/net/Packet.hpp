@@ -6,24 +6,23 @@
 
 #include "Hash.hpp"
 
-/// ������������ ������
 enum CommandList {
-	Registration = 1,         /// �����������
-	UnRegistration,		 /// �������������� 
-	Redirect,			 /// ����������
-	GetHash,              /// ������� ���
-	SendHash,		     /// ��������� ���
-	SendTransaction,      /// ��������� ����������
-	GetTransaction,       /// ������� ����������
-	SendTransactionList,  /// ��������� �������������� ����
-	GetTransactionList,   /// ������� �������������� ����
-	SendVector,           /// ��������� ������
-	GetVector,			 /// ������� ������
-	SendMatrix,           /// ��������� �������
-	GetMatrix,            /// ������� �������
-	SendBlock,            /// ��������� ���� ������
-	GetHashAll,          /// ������ ���(�) �� ���� �����
-	SendIpTable,         /// ��������� ������ ���������� ����� � �������� ���� �����
+	Registration = 1,         
+	UnRegistration,		 
+	Redirect,			 
+	GetHash,              
+	SendHash,		     
+	SendTransaction,      
+	GetTransaction,       
+	SendTransactionList,  
+	GetTransactionList,   
+	SendVector,           
+	GetVector,			 
+	SendMatrix,          
+	GetMatrix,            
+	SendBlock,            
+	GetHashAll,          
+	SendIpTable,         
 	SinhroPacket,
 	GiveHash2,
 	SuperCommand,
@@ -37,11 +36,11 @@ enum CommandList {
 	GetFirstTransaction = 30
 };
 
-/// ������������ ���������
+
 enum SubCommandList {
-	RegistrationLevelNode = 1, /// ������� ������ ���������� � �������� ����
-	GiveHash,              /// ������ �� ���
-	GetBlock,			  /// ������ �� ���� ������
+	RegistrationLevelNode = 1, 
+	GiveHash,              
+	GetBlock,			  
 	GetBlocks,
 	Empty,
 	GetFirstBlock,
@@ -61,16 +60,16 @@ enum { max_length = 62440 };
 
 #pragma pack(push, 1)
 struct Packet {
-	char	 command;                        /// �������
-	char	 subcommand;					 /// ����������
-	char	 version;						 /// ������
-	uint32_t origin_ip;                      /// ����� ������� �����������
-	char	 hash[hash_length];              /// ��� �����������/������������ ����
-	char	 publicKey[publicKey_length];    /// ��������� ���� �����������/������������ ����
-	char	 HashBlock[hash_length];		 /// ��� �����
-	uint16_t header;						 /// ����� ���������
-	uint16_t countHeader;					 /// ���������� ����������
-	char	 data[max_length];               /// ������
+	char	 command;                        
+	char	 subcommand;					 
+	char	 version;						 
+	uint32_t origin_ip;                      
+	char	 hash[hash_length];              
+	char	 publicKey[publicKey_length];    
+	char	 HashBlock[hash_length];		 
+	uint16_t header;						 
+	uint16_t countHeader;					 
+	char	 data[max_length];               
 
 	constexpr static unsigned int headerLength() { return sizeof(Packet) - max_length; }
 };
@@ -149,7 +148,7 @@ private:
 	template <size_t> friend class PacketManager;
 };
 
-/* Meant as singleton */
+
 template <size_t PageSize>
 class PacketManager {
 public:
@@ -207,7 +206,7 @@ public:
 
 private:
 	static const auto offset = 32 + publicKey_length;
-	char internal_[offset + HashSize];  // id + public key + data hash
+	char internal_[offset + HashSize];  
 	char* hash = internal_ + offset;
 };
 
