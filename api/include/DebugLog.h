@@ -44,4 +44,4 @@ inline void DebugLog(T t, Args&&... args)
 #endif
 
 
-#endif // DEBUG_LOG_H
+#endif 

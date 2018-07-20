@@ -17,12 +17,8 @@ add_custom_command(
     -out ${THRIFT_EXECUTOR_GEN_DIR}
     ${CMAKE_CURRENT_SOURCE_DIR}/api.thrift
   MAIN_DEPENDENCY ${CMAKE_CURRENT_SOURCE_DIR}/api.thrift
-  # DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/api.thrift
   )
 
-# Не рекомендуется использовать file(GLOB, поскольку он вызывается только на стадии
-# генератора Cmake. При добавлении файлов в папку он вызван не будет - и список файлов
-# не обновится.
 add_library(csconnector
     include/csstats.h
     src/csstats.cpp
@@ -35,10 +31,7 @@ add_library(csconnector
 
 target_link_libraries (csconnector PUBLIC csdb csnode csconnector_gen csconnector_executor_gen)
 
-# INCLUDE DIRECTORIES лучше задавать не глобально, а для конкретного проекта.
-# INCLUDE DIRECTORIES из подключаемых библиотек (в данном случае thrift и csdb)
-# задавать не надо. Они включены в INTERFACE библиотек и подключатся автоматически
-# в target_link_libraries
+
 target_include_directories(csconnector
   PUBLIC include
   PRIVATE src

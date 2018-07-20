@@ -60,12 +60,12 @@ class APIHandler : public APIHandlerInterface
     void TransactionFlow(api::TransactionFlowResult& _return,
                          const api::Transaction& transaction) override;
 
-    // Get list of pools from last one (head pool) to the first one.
+    
     void PoolListGet(api::PoolListGetResult& _return,
                      const int64_t offset,
                      const int64_t limit) override;
 
-    // Get pool info by pool hash. Starts looking from last one (head pool).
+    
     void PoolInfoGet(api::PoolInfoGetResult& _return,
                      const api::PoolHash& hash,
                      const int64_t index) override;

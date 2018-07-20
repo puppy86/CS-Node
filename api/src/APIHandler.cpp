@@ -3,7 +3,6 @@
 
 #include "csconnector/csconnector.h"
 
-// csdb
 #include <csdb/address.h>
 #include <csdb/amount.h>
 #include <csdb/csdb.h>
@@ -183,12 +182,11 @@ APIHandler::convertPool(const csdb::Pool& pool)
         result.time = atoll(
           pool.user_field(0)
             .value<std::string>()
-            .c_str()); // atoll(pool.user_field(0).value<std::string>().c_str());
+            .c_str()); 
 
         result.transactionsCount =
-          (int32_t)pool.transactions_count(); // DO NOT EVER CREATE POOLS WITH
-                                              // MORE THAN 2 BILLION
-                                              // TRANSACTIONS, EVEN AT NIGHT
+          (int32_t)pool.transactions_count(); 
+                                              
     }
     return result;
 }
@@ -207,16 +205,16 @@ extractTransactions(const csdb::Pool& pool, int64_t limit, const int64_t offset)
     assert(transactionsCount >= 0);
 
     if (offset > transactionsCount) {
-        return api::Transactions{}; // если запрашиваемые транзакций выходят за
-                                    // пределы пула возвращаем пустой результат
+        return api::Transactions{}; 
+                                    
     }
     api::Transactions result;
     transactionsCount -=
-      offset; // мы можем отдать все транзакции в пуле за вычетом смещения
+      offset; 
 
     if (limit > transactionsCount)
-        limit = transactionsCount; // лимит уменьшается до реального количества
-                                   // транзакций которые можно отдать
+        limit = transactionsCount; 
+                                   
 
     for (int64_t index = offset; index < (offset + limit); ++index) {
         const csdb::Transaction transaction = pool.transaction(index);
@@ -274,9 +272,6 @@ APIHandler::TransactionsGet(TransactionsGetResult& _return,
 
             while (true) {
                 auto trans = curr.transaction(curIdx);
-                //std::cerr << "Ladder: " << trans.target().to_string() << " <- "
-                //          << trans.source().to_string() << " of "
-                //          << trans.amount().integral() << std::endl;
                 if (trans.target() == addr || trans.source() == addr) {
                     if (offset == 0)
                         transactions.push_back(trans);
@@ -315,7 +310,7 @@ serialize(const api::SmartContract& sc)
 api::SmartContract
 deserialize(std::string& s)
 {
-    // https://stackoverflow.com/a/16261758/2016154
+    
     static_assert(
       CHAR_BIT == 8 && std::is_same_v<std::uint8_t, unsigned char>,
       "This code requires std::uint8_t to be implemented as unsigned char.");
@@ -363,40 +358,18 @@ class ToHex
     friend std::ostream& operator<<(std::ostream& os, const ToHex& th);
 };
 
-//////////std::ostream&
-//////////operator<<(std::ostream& os, const ToHex& th)
-//////////{
-//////////    boost::io::ios_flags_saver ifs(os);
-//////////    for (auto c : th.s) {
-//////////        os << std::hex << std::setfill('0') << std::setw(2) << std::nouppercase
-//////////           << (int)c;
-//////////    }
-//////////
-//////////    return os;
-//////////}
 
 void
 APIHandler::TransactionFlow(TransactionFlowResult& _return,
                             const Transaction& transaction)
 {
-    //struct destroy_logger
-    //{
-    //    bool success_exit = false;
-    //    ~destroy_logger()
-    //    {
-    //        std::cerr << "Exited from APIHandler::TransactionFlow "
-    //                  << (success_exit ? "with success" : "with failure")
-    //                  << std::endl;
-    //    }
-    //} destroy_logger;
+
 
     if (transaction.target == "accXpfvxnZa8txuxpjyPqzBaqYPHqYu2rwn34lL8rjI=") {
-        //destroy_logger.success_exit = true;
+        
         return;
     }
-/*
-    transaction.printTo(std::cerr << "In APIHandler::TransactionFlow"
-                                  << std::endl);*/
+
 
     SUPER_TIC();
 
@@ -443,12 +416,6 @@ APIHandler::TransactionFlow(TransactionFlowResult& _return,
         }
         bool deploy = is_smart_deploy(input_smart);
 
-        //////////////smart_for_executor.printTo(std::cerr << "Found smart for executor: "
-        //////////////                                     << std::endl);
-        //////////////std::cerr << std::endl;
-        //////////////smart_for_executor.printTo(std::cerr << "Found smart for net: "
-        //////////////                                     << std::endl);
-        //////////////std::cerr << std::endl;
 
         if (smart_for_executor.address.empty() == deploy) {
             SUPER_TIC();
@@ -463,7 +430,6 @@ APIHandler::TransactionFlow(TransactionFlowResult& _return,
         } else {
             SUPER_TIC();
             SetResponseStatus(_return.status, APIRequestStatusType::FAILURE);
-            //destroy_logger.success_exit = true;
             return;
         }
     }
@@ -503,9 +469,6 @@ APIHandler::TransactionFlow(TransactionFlowResult& _return,
     }
 
     SUPER_TIC();
-/////*
-////    std::cerr << "Contract state BEFORE execution:" << std::endl
-////              << ToHex(smart_for_net.contractState) << std::endl;*/
 
     executor.executeByteCode(
       api_resp,
@@ -522,9 +485,6 @@ APIHandler::TransactionFlow(TransactionFlowResult& _return,
     new_smart.method = smart_for_net.method;
     new_smart.params = smart_for_net.params;
     new_smart.address = smart_for_net.address;
-/////*
-////    std::cerr << "Contract state AFTER execution:" << std::endl
-////              << ToHex(new_smart.contractState) << std::endl;*/
 
     csdb::Transaction contract_redeploy_tr = send_transaction;
     contract_redeploy_tr.add_user_field(0, serialize(new_smart));
@@ -533,7 +493,6 @@ APIHandler::TransactionFlow(TransactionFlowResult& _return,
     SUPER_TIC();
 
     SetResponseStatus(_return.status, APIRequestStatusType::SUCCESS);
-    //destroy_logger.success_exit = true;
     return;
 }
 
@@ -542,7 +501,6 @@ APIHandler::PoolListGet(api::PoolListGetResult& _return,
             const int64_t offset,
             const int64_t const_limit)
 {
-    ////////////////////////std::cout << "PoolListGet: " << offset << ", " << const_limit << std::endl;
 
     if (offset > 100)
         const_cast<int64_t&>(offset) = 100;
@@ -554,8 +512,7 @@ APIHandler::PoolListGet(api::PoolListGetResult& _return,
     csdb::PoolHash hash = s_blockchain.getLastHash();
 
     size_t lastCount = 0;
-    csdb::Pool pool; // = s_blockchain->loadBlock(hash/*, lastCount*/);
-
+    csdb::Pool pool; 
     uint64_t sequence = s_blockchain.getSize();
 
     const uint64_t lower =
@@ -564,11 +521,10 @@ APIHandler::PoolListGet(api::PoolListGetResult& _return,
         auto cch = poolCache.find(hash);
 
         if (cch == poolCache.end()) {
-            pool = s_blockchain.loadBlock(hash /*, lastCount*/);
+            pool = s_blockchain.loadBlock(hash);
             api::Pool apiPool = convertPool(pool);
 
             if (it <= sequence - std::min(sequence, (uint64_t)offset)) {
-                // apiPool.transactionsCount = lastCount;
                 _return.pools.push_back(apiPool);
             }
             lastCount = 0;
@@ -652,75 +608,7 @@ APIHandler::NodesInfoGet(api::NodesInfoGetResult& _return)
 
     SetResponseStatus(_return.status, APIRequestStatusType::NOT_IMPLEMENTED);
 }
-//////
-//////class blockchain_transactions_with_smarts
-//////{
-//////  private:
-//////    credits::blockchain& blockchain;
-//////
-//////  public:
-//////    blockchain_transactions_with_smarts(credits::blockchain& blockchain)
-//////      : blockchain(blockchain)
-//////    {}
-//////
-//////    class const_iterator
-//////      : public std::iterator<std::forward_iterator_tag, transaction>
-//////    {
-//////        credits::blockchain& blockchain;
-//////        csdb::pool p;
-//////        size_t tr_idx;
-//////
-//////        const_iterator(credits::blockchain& blockchain,
-//////                       csdb::pool p,
-//////                       size_t tr_idx)
-//////          : blockchain(blockchain)
-//////          , p(p)
-//////          , tr_idx(tr_idx)
-//////        {
-//////            assert(&blockchain != nullptr);
-//////        }
-//////
-//////      public:
-//////        static const_iterator begin(credits::blockchain& blockchain)
-//////        {
-//////            csdb::pool p{ blockchain.getlasthash(), 0 };
-//////            const_iterator iter(blockchain, p, p.transactions_count());
-//////            return ++iter;
-//////        }
-//////
-//////        static const_iterator end(credits::blockchain& blockchain)
-//////        {
-//////            return const_iterator(blockchain, csdb::pool(), 0);
-//////        }
-//////
-//////        bool operator!=(const const_iterator& other)
-//////        {
-//////            return p.hash() != other.p.hash() || tr_idx != other.tr_idx;
-//////        }
-//////
-//////        const_iterator& operator++()
-//////        {
-//////            do {
-//////                while (tr_idx == 0) {
-//////                    p = blockchain.loadblock(p.previous_hash());
-//////                    if (!p.is_valid()) {
-//////                        return *this;
-//////                    }
-//////                    tr_idx = p.transactions_count();
-//////                }
-//////            } while (!is_smart(p.transactions()[--tr_idx]));
-//////            return *this;
-//////        }
-//////
-//////        const csdb::transaction& operator*()
-//////        {
-//////            return p.transactions()[tr_idx];
-//////        }
-//////    };
-//////
-//////    const_iterator begin() { return const_iterator::begin(blockchain); }
-//////    const_iterator end() { return const_iterator::end(blockchain); }
-//////};
+
 
 void
 APIHandler::SmartContractGet(api::SmartContractGetResult& _return,
@@ -728,7 +616,6 @@ APIHandler::SmartContractGet(api::SmartContractGetResult& _return,
 {
     Log("SmartContractGet");
 
-    //std::cerr << "Input address: " << address << std::endl;
 
     update_smart_caches();
 
@@ -807,8 +694,6 @@ APIHandler::SmartContractsListGet(api::SmartContractsListGetResult& _return,
     csdb::Address addr =
       Credits::BlockChain::getAddressFromKey(deployer.c_str());
 
-    //std::cerr << "Input address: " << deployer << std::endl;
-
     get_mapped_deployer_smart(
       addr,
       [](const api::SmartContract& smart) { return smart; },
@@ -816,8 +701,6 @@ APIHandler::SmartContractsListGet(api::SmartContractsListGetResult& _return,
 
     SetResponseStatus(_return.status, APIRequestStatusType::SUCCESS);
 
-    //////////_return.printTo(std::cerr << "SmartContractListGetResult:" << std::endl);
-    //////////std::cerr << std::endl;
 }
 
 void

@@ -18,7 +18,7 @@ namespace csconnector {
                 Log("csconnector started on port ", config.port);
                 server.run();
             } catch (...) {
-                std::cerr << "Oh no! I'm dead :'-(" << std::endl;
+                std::cerr << "connector is not started" << std::endl;
             }
         });
     }
