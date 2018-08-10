@@ -1,46 +1,43 @@
-# CSNODE
-## What is CSNODE?
-CSNODE is the main module that provides the ability to run a node and participate in the CREDITS blockhain network. The node performs the following functions:
-* Processing and storage of transactions 
-* Execution and confirmation of the terms of intellectual contracts 
-* Processing of requests from third-party systems
-* Provision of data on request. 
+<h1>CSNODE</h1>
+<h2>What is CSNODE?</h2>
+<p>CSNODE is the main module that provide an opportunity to run a node and participate in CREDITS blockhain network. The node performs processing and storage of transactions, execution and confirmation of the terms of smart contracts, processing requests from third-party systems, and provides data upon request. Each node on the network has the same functionality.
+The node consists of the following elements:</p>
+<ul>
+<li>API</li> 
+<li>Desision-making module(Solver)</li> 
+<li>Storage(CSDB)</li> 
+<li>Transport protocol</li> 
+</ul>
+<h2>How to Build</h2>
+<ol type='1'>
+<li>Clone the repository:
 
-Each node has the same functionality.The node consists of the following elements:
-* API 
-* Desision-making module(Solver)
-* Storage(CSDB)
-* Transport protocol
-## How to Build
-1) Clone the repository:
+`git clone https://github.com/CREDITSCOM/CSNode.git`</li>
+<li>Make a directory build64:
 
-`git clone https://github.com/CREDITSCOM/CSNode.git`
-2) Make a directory build64:
+`mkdir build64`</li>
+<li>Change directory:
 
-`mkdir build64`
-3) Change directory:
+`cd build64`</li>
+<li>Run a CMAKE command:
 
-`cd build64`
-4) Run a CMAKE command:
+`cmake .. -A x64</li>`
+<li>Open a project in Visual Studio:
 
-`cmake .. -A x64`
-5) Open a project in Visual Studio:
-
-`explorer Project.sln`
-
-Also, you can use the assembly for a specific program
+`explorer Project.sln`</li>
+</ol>
+<p>Also, you can use the assembly for a specific program
 
 `cmake -G "Development Environment x64"`
-## System requirements:
-Minimum system requirements:
-
+</p>
+<h2>System requirements:</h2>
+<h4>Minimum system requirements:</h4>
 Operating system: Windows® 7 / Windows® 8 / Windows® 10 64-bit (with the last update package)
 Processor (CPU): with frequency of 1 GHz (or faster) with PAE, NX and SSE2 support;
 Memory (RAM): 2–4 Gb
 HDD: 1 Gb
 Internet connection: 3 Mbit/s
-
-Recommended system requirements:
+<h4>Recommended system requirements:</h4>
 
 Operating system: Windows® 7 / Windows® 8 / Windows® 10 64-bit (with the last update package)
 Processor (CPU): Intel® Core ™ i3 or AMD Phenom ™ X3 8650
@@ -48,21 +45,26 @@ Memory (RAM): 4–8 Gb
 SSD: 1 Gb
 Internet connection: 5 Mbit/s.
 
-### Resources
-[CREDITS Website](https://credits.com//)
+<h3>Resources</h3>
 
-[Medium](https://medium.com/@credits)
+<a href="website" src="https://credits.com//">CREDITS Website</a>
 
-[Documentation](https://github.com/CREDITSCOM/DOCUMENTATION)
+<a href="Medium" src="https://medium.com/@credits">Medium</a>
 
-[Whitepaper](https://github.com/CREDITSCOM/DOCUMENTATION/blob/master/WhitePaper%20CREDITS%20Eng.pdf)
+<a href="Documentation" src="https://github.com/CREDITSCOM/DOCUMENTATION">Documentation</a>
 
-[Technical paper](https://github.com/CREDITSCOM/DOCUMENTATION/blob/master/TechnicalPaper%20CREDITS%20Eng.pdf)
+<a href="Whitepaper" src="https://github.com/CREDITSCOM/DOCUMENTATION/blob/master/WhitePaper%20CREDITS%20Eng.pdf">Whitepaper</a>
 
-[Developers portal](https://developers.credits.com/)
+<a href="Technical paper" src="https://github.com/CREDITSCOM/DOCUMENTATION/blob/master/TechnicalPaper%20CREDITS%20Eng.pdf">Technical paper</a>
 
-[Credits forum](http://forum.credits.com/)
-### Community links
-[Official Telegram group](https://t.me/creditscom)
+<a href="Developers portal" src="https://developers.credits.com/">Developers portal</a>
 
-[Official Twitter](https://twitter.com/creditscom)
+<a href="Credits forum" src="http://forum.credits.com/">Credits forum</a>
+
+<h3>Community links</h3>
+
+<a href="Official Telegram group" src="https://t.me/creditscom">Official Telegram group</a>
+
+<a href="Official Twitter" src="https://twitter.com/creditscom">Official Twitter</a>
+
+<a href="Reddit" src="https://www.reddit.com/r/CreditsOfficial/">Reddit</a>
