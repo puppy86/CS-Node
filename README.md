@@ -67,7 +67,7 @@ Please make sure your contributions adhere to our coding guidelines:</p>
 
 <a href="https://credits.com/Content/Docs/TechnicalPaperENG.pdf">Technical paper</a>
 
-<a href="https://developers.credits.com/l">Developers portal</a>
+<a href="https://developers.credits.com/">Developers portal</a>
 
 <a href="http://forum.credits.com/">Credits forum</a>
 
