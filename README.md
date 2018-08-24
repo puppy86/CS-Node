@@ -21,7 +21,7 @@ The node consists of the following elements:</p>
 `cd build64`</li>
 <li>Run a CMAKE command:
 
-`cmake .. -A x64</li>`
+`cmake .. -A x64`</li>
 <li>Open a project in Visual Studio:
 
 `explorer Project.sln`</li>
