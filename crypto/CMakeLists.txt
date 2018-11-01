@@ -16,7 +16,9 @@ target_link_libraries (${PROJECT_NAME} ed25519 blake2)
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC
-    ${CMAKE_CURRENT_SOURCE_DIR}/include )
+    ${CMAKE_CURRENT_SOURCE_DIR}/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../third-party/blake2/ref
+    ${CMAKE_CURRENT_SOURCE_DIR}/../third-party/ed25519/src )
 
 # add_subdirectory(dynamic)
 
