@@ -26,6 +26,11 @@ namespace dll
 
 #endif
 
+  /*
+  #define RTLD_LAZY   1
+  #define RTLD_NOW    2
+  #define RTLD_GLOBAL 4
+  */
 
   void* LoadSharedLibrary(const char *pcDllname, int iMode = 2)
   {
